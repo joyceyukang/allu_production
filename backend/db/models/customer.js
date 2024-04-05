@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    toSafeObject() {
+      // context will be the User instance
+      const { id, firstName, lastName, email } = this;
+      return { id, firstName, lastName, email };
+    }
+    
     static associate(models) {
       // define association here
     }
@@ -35,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Customer',
+    defaultScope: {
+      attributes: {
+        exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
+      },
+    },
   });
   return Customer;
 };
