@@ -16,8 +16,22 @@ module.exports = (sequelize, DataTypes) => {
   Customer.init({
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    hashed_password: DataTypes.STRING
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true,
+      validate: {
+        len: [3, 256],
+        isEmail: true,
+      },
+    },
+    hashedPassword: {
+      allowNull: false,
+      type: DataTypes.STRING.BINARY,
+      validate: {
+        len: [60, 60],
+      },
+    },
   }, {
     sequelize,
     modelName: 'Customer',
